@@ -1,0 +1,63 @@
+.week {
+    background: var(--lightbackground);
+    padding: 1.5rem;
+    max-height: 65%;
+    overflow: auto;
+    margin: 0 auto;
+    margin-top: 3rem;
+    text-align: center;
+    margin-top: auto;
+}
+
+.day {
+    font-weight: bold;
+    font-size: var(--mediumtitle);
+    color: black;
+}
+
+.slot:hover {
+    filter: brightness(85%);
+}
+
+.slot:disabled {
+    font-weight: bold;
+    color: white;
+    cursor: not-allowed;
+    pointer-events: none;
+        background: repeating-linear-gradient(
+                45deg,
+                var(--brandgreen),
+                var(--brandgreen) 1.7rem,
+                var(--lightbrandgreen) 10px,
+                var(--lightbrandgreen) 20px
+        );
+}
+
+.selected {
+    box-shadow: 0 0 1rem rgba(255, 255, 255, 100);
+    background: lightblue;
+}
+
+.blocked {
+    color: #fff;
+    background: var(--brandgreen);
+}
+
+.disabled {
+    opacity: 0.65;
+    background:
+        /* On "top" */
+            repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    #ccc 10px,
+                    #ccc 20px
+            ),
+                /* on "bottom" */
+            linear-gradient(
+                    to bottom,
+                    #eee,
+                    #999
+            );
+}

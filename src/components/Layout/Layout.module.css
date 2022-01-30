@@ -1,0 +1,23 @@
+.article {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    max-width: 96rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.title {
+    text-align: center;
+}
+
+.header {
+    margin: 5rem auto;
+}
+
+.footer {
+    padding: 3rem;
+    text-align: center;
+    font-size: 1.8rem;
+}

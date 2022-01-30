@@ -1,0 +1,13 @@
+/* Spacing */
+button {
+  width: 100%;
+  font-size: 1.6rem;
+  padding: 0.5rem;
+  color: black;
+  background-color: var(--brandyellow);
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  padding: 1.5rem 0.5rem;
+  margin: 1rem auto;
+}
