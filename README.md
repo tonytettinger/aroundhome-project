@@ -6,9 +6,13 @@ This is a frontend practice project as per the project description.
 The project could be run on a local by npm install and npm run dev.
 The online live version is hosted here: https://aroundhome-project.netlify.app/
 
+##Instructions:
+Select the appointment/meeting time from the scrollable menu for each company.
+To de-select click on the highlighted selected time.
+
 ##Project considerations:
 The goal was to create a React+TypeScript based solution for the the exercise, minimizing the usage of additional packages.
-Therefore it is made with CSS modules, although I'd prefer styled components in general.
+Therefore, it is made with CSS modules, although I'd prefer styled components in general.
 
 As for state management, I chose not to include any extra state management methods or tools, but I could have added a React Context provider.
 
