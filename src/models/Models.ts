@@ -34,9 +34,9 @@ export interface TimeSlotListProps {
   company: string;
   daysAvailable: string[];
   setTimeSlots: (slots: TimeSlotCustomData[]) => void;
-  timeSlots: TimeSlotCustomData[],
+  timeSlots: TimeSlotCustomData[];
   setSelected: (slot: Map<string, string>) => void;
   selected: Map<string, string>;
 }
 
-export type SlotStatus =  "available" | "disabled" | "blocked" | "selected";
+export type SlotStatus = "available" | "disabled" | "blocked" | "selected";

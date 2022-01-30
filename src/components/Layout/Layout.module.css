@@ -10,10 +10,11 @@
 
 .title {
     text-align: center;
+    font-size: 2.4rem;
 }
 
 .header {
-    margin: 5rem auto;
+    margin: 3rem auto;
 }
 
 .footer {

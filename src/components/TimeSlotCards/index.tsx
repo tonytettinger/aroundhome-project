@@ -9,14 +9,16 @@ const TimeSlotCards: React.FC = () => {
   const {isLoading, error, timeSlotsProcessed, isFetched, daysAvailable} =
       useTimes();
 
-  const [selected, setSelected] = useState<Map<string,string>>(new Map<string, string>());
+  const [selected, setSelected] = useState<Map<string, string>>(
+      new Map<string, string>()
+  );
   const [timeSlots, setTimeSlots] = useState<TimeSlotCustomData[]>([]);
 
   useEffect(() => {
     if (isFetched && timeSlotsProcessed) {
       setTimeSlots(timeSlotsProcessed);
       const newMap = new Map(selected);
-      Object.keys(daysAvailable).forEach((key :string) =>
+      Object.keys(daysAvailable).forEach((key: string) =>
           newMap.set(key, "Select")
       );
       setSelected(newMap);

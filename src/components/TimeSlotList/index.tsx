@@ -11,6 +11,7 @@ const TimeSlotList = ({
                           selected,
                       }: TimeSlotListProps): JSX.Element => {
     const toggleSlot = (event: React.MouseEvent<HTMLButtonElement>) => {
+
         const id = event.currentTarget.getAttribute("data-id");
         const name = event.currentTarget.getAttribute("data-name");
         const range = event.currentTarget.getAttribute("data-range");
@@ -20,7 +21,9 @@ const TimeSlotList = ({
         let clicked: SlotStatus = "selected";
         let toggledDisable: SlotStatus = "disabled";
         let toggledBlocked: SlotStatus = "blocked";
+
         if (status === "blocked") return;
+
         if (status === "selected") {
             clicked = "available";
             toggledDisable = "available";
