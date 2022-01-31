@@ -24,49 +24,39 @@ const TimeSlotList = ({
         const range = slot.hourRange;
         const day = slot.dayOfTheWeek;
         const status = slot.status;
+        const selectedText = `${day}, ${range}`;
+        const isSelected = status === "selected";
+        const selectionBoxText = isSelected ? "Select" : selectedText;
+        const updateSelected = new Map(selected);
+        updateSelected.set(name!, selectionBoxText);
+        setSelected(updateSelected);
 
-        let clicked: SlotStatus = "selected"
-        let toggledDisable: SlotStatus = "disabled"
-        let toggledBlocked: SlotStatus = "blocked"
-
-        if (status === "blocked") return
-
-        if (status === "selected") {
-            clicked = "available"
-            toggledDisable = "available"
-            toggledBlocked = "available"
-            const updateSelected = new Map(selected)
-            updateSelected.set(name!, "Select")
-            setSelected(updateSelected)
-        } else {
-            const updateSelected = new Map(selected)
-            const selectedText = `${day}, ${range}`
-            updateSelected.set(name!, selectedText)
-            setSelected(updateSelected)
-        }
+        const clicked: SlotStatus = isSelected ? "available" : "selected";
+        const toggledDisable: SlotStatus = isSelected ? "available" : "disabled";
+        const toggledBlocked: SlotStatus = isSelected ? "available" : "blocked";
 
         const updatedSlots: TimeSlotCustomData[] = timeSlots.map(
             (slot: TimeSlotCustomData) => {
                 //same company slots
                 if (slot.company === name && slot.status !== "blocked") {
-                        return (id !== slot.slotUid)
-                            ? {...slot, status: toggledDisable}
-                            : {...slot, status: clicked}
+                    return id !== slot.slotUid
+                        ? {...slot, status: toggledDisable}
+                        : {...slot, status: clicked};
                     //other company slots on the same row
                 } else if (slot.hourRange === range && slot.dayOfTheWeek === day) {
                     //if the company has not selected an appointment yet
                     if (selected.get(slot.company) === "Select") {
                         return slot.status !== "disabled"
                             ? {...slot, status: toggledBlocked}
-                            : slot
+                            : slot;
                         //if the company has an appointment selected
                     } else {
                         if (slot.status === "available") {
-                            return {...slot, status: "blocked"}
+                            return {...slot, status: "blocked"};
                         } else if (slot.status === "blocked") {
-                            return {...slot, status: "disabled"}
+                            return {...slot, status: "disabled"};
                         } else {
-                            return {...slot, status: toggledBlocked}
+                            return {...slot, status: toggledBlocked};
                         }
                     }
                 } else {
@@ -75,13 +65,13 @@ const TimeSlotList = ({
                     slot.status === "blocked" ||
                     slot.status === "disabled"
                         ? slot
-                        : {...slot, status: "available"}
+                        : {...slot, status: "available"};
                 }
             }
-        )
+        );
 
-        setTimeSlots(updatedSlots)
-    }
+        setTimeSlots(updatedSlots);
+    };
 
     return (
         <div className={classes.week}>
@@ -109,13 +99,13 @@ const TimeSlotList = ({
                                                 ? "Reserved for other company"
                                                 : slot.hourRange}
                                     </button>
-                                )
+                                );
                             })}
                     </div>
-                )
+                );
             })}
         </div>
-    )
-}
+    );
+};
 
 export default TimeSlotList
