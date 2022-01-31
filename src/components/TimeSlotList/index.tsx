@@ -1,6 +1,10 @@
 import React from "react";
 import classes from "./TimeSlotList.module.css";
-import {SlotStatus, TimeSlotCustomData, TimeSlotListProps} from "../../models/Models";
+import {
+    SlotStatus,
+    TimeSlotCustomData,
+    TimeSlotListProps,
+} from "../../models/Models";
 
 const TimeSlotList = ({
                           company,
@@ -11,65 +15,73 @@ const TimeSlotList = ({
                           selected,
                       }: TimeSlotListProps): JSX.Element => {
     const toggleSlot = (event: React.MouseEvent<HTMLButtonElement>) => {
-
         const id = event.currentTarget.getAttribute("data-id");
-        const name = event.currentTarget.getAttribute("data-name");
-        const range = event.currentTarget.getAttribute("data-range");
-        const day = event.currentTarget.getAttribute("data-day");
-        const status = event.currentTarget.getAttribute("data-status");
+        const slot = timeSlots.filter((obj) => {
+            return obj.slotUid === id;
+        })[0];
 
-        let clicked: SlotStatus = "selected";
-        let toggledDisable: SlotStatus = "disabled";
-        let toggledBlocked: SlotStatus = "blocked";
+        const name = slot.company;
+        const range = slot.hourRange;
+        const day = slot.dayOfTheWeek;
+        const status = slot.status;
 
-        if (status === "blocked") return;
+        let clicked: SlotStatus = "selected"
+        let toggledDisable: SlotStatus = "disabled"
+        let toggledBlocked: SlotStatus = "blocked"
+
+        if (status === "blocked") return
 
         if (status === "selected") {
-            clicked = "available";
-            toggledDisable = "available";
-            toggledBlocked = "available";
-            const updateSelected = new Map(selected);
-            updateSelected.set(name!, "Select");
-            setSelected(updateSelected);
+            clicked = "available"
+            toggledDisable = "available"
+            toggledBlocked = "available"
+            const updateSelected = new Map(selected)
+            updateSelected.set(name!, "Select")
+            setSelected(updateSelected)
         } else {
-            const updateSelected = new Map(selected);
-            const selectedText = `${day}, ${range}`;
-            updateSelected.set(name!, selectedText);
-            setSelected(updateSelected);
+            const updateSelected = new Map(selected)
+            const selectedText = `${day}, ${range}`
+            updateSelected.set(name!, selectedText)
+            setSelected(updateSelected)
         }
 
         const updatedSlots: TimeSlotCustomData[] = timeSlots.map(
             (slot: TimeSlotCustomData) => {
                 //same company slots
-                if (slot.company === name) {
-                    if (slot.status !== "blocked") {
-                        return (id !== slot.slotUid) ? {...slot, status: toggledDisable} : {...slot, status: clicked}
-                    } else {
-                        return slot;
-                    }
-                //other company slots
+                if (slot.company === name && slot.status !== "blocked") {
+                        return (id !== slot.slotUid)
+                            ? {...slot, status: toggledDisable}
+                            : {...slot, status: clicked}
+                    //other company slots on the same row
                 } else if (slot.hourRange === range && slot.dayOfTheWeek === day) {
                     //if the company has not selected an appointment yet
-                    if(selected.get(slot.company) === "Select"){
-                        return (slot.status !== "disabled") ? {...slot, status: toggledBlocked} : slot
-                    //if the company has an appointment selected
+                    if (selected.get(slot.company) === "Select") {
+                        return slot.status !== "disabled"
+                            ? {...slot, status: toggledBlocked}
+                            : slot
+                        //if the company has an appointment selected
                     } else {
-                        if(slot.status === 'available') {
-                            return {...slot, status: "blocked"};
+                        if (slot.status === "available") {
+                            return {...slot, status: "blocked"}
                         } else if (slot.status === "blocked") {
-                            return {...slot, status: "disabled"};
+                            return {...slot, status: "disabled"}
                         } else {
                             return {...slot, status: toggledBlocked}
                         }
                     }
-                }  else {
-                    return ( slot.status === "selected" || slot.status === "blocked" || slot.status === "disabled") ? slot : {...slot, status: "available"}
+                } else {
+                    //other company slots on different rows
+                    return slot.status === "selected" ||
+                    slot.status === "blocked" ||
+                    slot.status === "disabled"
+                        ? slot
+                        : {...slot, status: "available"}
                 }
             }
-        );
+        )
 
-        setTimeSlots(updatedSlots);
-    };
+        setTimeSlots(updatedSlots)
+    }
 
     return (
         <div className={classes.week}>
@@ -88,11 +100,7 @@ const TimeSlotList = ({
                                         }
                                         className={`${classes[slot.status]}`}
                                         key={slot.slotUid}
-                                        data-name={slot.company}
-                                        data-range={slot.hourRange}
                                         data-id={slot.slotUid}
-                                        data-day={slot.dayOfTheWeek}
-                                        data-status={slot.status}
                                         onClick={toggleSlot}
                                     >
                                         {slot.status === "disabled"
@@ -101,13 +109,13 @@ const TimeSlotList = ({
                                                 ? "Reserved for other company"
                                                 : slot.hourRange}
                                     </button>
-                                );
+                                )
                             })}
                     </div>
-                );
+                )
             })}
         </div>
-    );
-};
+    )
+}
 
 export default TimeSlotList
