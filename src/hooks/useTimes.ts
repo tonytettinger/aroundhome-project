@@ -2,19 +2,14 @@ import {useQuery} from "react-query";
 import {ApiRoutes} from "../config/apiRoutes";
 import {
     DaysObject,
+    ProcessedTimes,
     SlotStatus,
     TimeSlot,
     TimeSlotCustomData,
     TimeSlotData,
-    UseTimes,
 } from "../models/Models";
 
-const useTimes = (): UseTimes => {
-    const {isLoading, error, data, isFetched} = useQuery<TimeSlotData[], Error>(
-        "timeSlotsData",
-        () => fetch(`${ApiRoutes.timeSlotsApi}`).then((res) => res.json())
-    );
-
+const transformData = (data: TimeSlotData[]) => {
     const daysAvailable: DaysObject = {};
 
     const timeSlotsProcessed: TimeSlotCustomData[] | undefined = data
@@ -32,7 +27,7 @@ const useTimes = (): UseTimes => {
 
             const lang = getLang();
 
-            const slotIntervals = timeSlots.map((timeSlot: TimeSlot) => {
+            return timeSlots.map((timeSlot: TimeSlot) => {
                 const dayOfTheWeek = new Date(timeSlot.start_time).toLocaleDateString(
                     lang,
                     {weekday: "long"}
@@ -51,18 +46,21 @@ const useTimes = (): UseTimes => {
                 const status: SlotStatus = "available";
                 return {slotUid, hourRange, dayOfTheWeek, company, status};
             });
-
-            return slotIntervals;
         })
         .flat();
 
-    return {
-        isLoading,
-        error,
-        timeSlotsProcessed,
-        isFetched,
-        daysAvailable,
-    };
+    return {timeSlotsProcessed, daysAvailable};
+};
+
+const fetchTimes = async (): Promise<TimeSlotData[]> => {
+    return await fetch(`${ApiRoutes.timeSlotsApi}`).then((res) => res.json())
+}
+
+const useTimes = () => {
+    return useQuery<TimeSlotData[], Error, ProcessedTimes>(
+        "timeSlotsData",
+        fetchTimes,
+        {select: transformData});
 };
 
 export default useTimes
