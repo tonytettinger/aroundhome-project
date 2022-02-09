@@ -6,7 +6,7 @@ import TimeSlotsCompany from "../TimeSlotsCompany";
 import {TimeSlotCustomData} from "../../models/Models";
 
 const TimeSlotCards: React.FC = () => {
-  const {isLoading, error, timeSlotsProcessed, isFetched, daysAvailable} =
+  const {isLoading, error, data, isFetched} =
       useTimes();
 
   const [selected, setSelected] = useState<Map<string, string>>(
@@ -15,10 +15,10 @@ const TimeSlotCards: React.FC = () => {
   const [timeSlots, setTimeSlots] = useState<TimeSlotCustomData[]>([]);
 
   useEffect(() => {
-    if (isFetched && timeSlotsProcessed) {
-      setTimeSlots(timeSlotsProcessed);
+    if (isFetched && data?.timeSlotsProcessed) {
+      setTimeSlots(data.timeSlotsProcessed);
       const newMap = new Map(selected);
-      Object.keys(daysAvailable).forEach((key: string) =>
+      Object.keys(data.daysAvailable).forEach((key: string) =>
           newMap.set(key, "Select")
       );
       setSelected(newMap);
@@ -26,13 +26,13 @@ const TimeSlotCards: React.FC = () => {
   }, [isFetched]);
 
   //todo: change to loader component
-  if (isLoading || !timeSlotsProcessed) return <div>Loading timeslot data</div>;
+  if (isLoading || !data) return <div>Loading timeslot data</div>;
   //todo: update error handling to be more informative
   if (error) return <div>An error has occurred</div>;
 
   let companies = [];
 
-  for (const [company, days] of Object.entries(daysAvailable)) {
+  for (const [company, days] of Object.entries(data.daysAvailable)) {
     companies.push(
         <TimeSlotsCompany
             key={company}

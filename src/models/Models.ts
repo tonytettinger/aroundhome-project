@@ -14,11 +14,8 @@ export interface DaysObject {
   [key: string]: string[];
 }
 
-export interface UseTimes {
-  isLoading: boolean;
-  error: Error | null;
+export interface ProcessedTimes {
   timeSlotsProcessed: TimeSlotCustomData[] | undefined;
-  isFetched: boolean;
   daysAvailable: DaysObject;
 }
 
